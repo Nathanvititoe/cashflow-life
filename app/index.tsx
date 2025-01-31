@@ -1,19 +1,24 @@
 // import necessary libraries/methods and components
-import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Platform } from "react-native";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import React, { useState } from "react";
+import { StyleSheet, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "./components/Header";
 import UserFinances from "./components/UserFinances";
 import TransactionLogs from "./components/TransactionLogs";
-import ScannerButton from "./components/QrCodeScanner/ScannerButton";
+import QRScanner from "./components/QrScanner";
 
 // App/index.tsx is the top level of the app, where all components reside (the home page)
-// Sometimes this is called App.tsx, but expo looks for index.tsx
 export default function App() {
+  const [showScanner, setShowScanner] = useState(false); // state to manage scanner visibility
   // logic/Functions Section
-  const handleDataScan = () => {
+  const handleScan = () => {
     console.log("getting data from qr scan.");
+    setShowScanner(false);
   };
+
+  const handleCameraClose = () => {
+    console.log("closing camera view...");
+  }
   // Tsx section (similar to html)
   return (
     // Safe Area avoids the phones header (battery, cell service)
@@ -21,18 +26,18 @@ export default function App() {
       {/*Header Component*/}
       <Header />
 
-      {/*Qr Code Scanner Button/Components*/}
+      {/* Qr Code Scanner */}
       <View style={[styles.appContent]}>
         <View style={styles.card}>
-          <ScannerButton onDataScan={handleDataScan} />
+          <QRScanner onScan={handleScan} onClose={handleCameraClose}/>
         </View>
 
-        {/*User's Finance's Component*/}
+        {/* User's Finance's */}
         <View style={styles.card}>
           <UserFinances />
         </View>
 
-        {/*Transaction Logs Component*/}
+        {/* Transaction Logs */}
         <View style={styles.card}>
           <TransactionLogs />
         </View>
@@ -45,7 +50,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1, // ensure app takes up whole screen
-    backgroundColor: "#121212", // Can test changes with this line
+    backgroundColor: "#121212", 
   },
   appContent: {
     padding: 16,
