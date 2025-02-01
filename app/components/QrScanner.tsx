@@ -10,13 +10,11 @@ import {
 // component properties definition
 interface QRScannerProps {
   onScan: (data: CardData) => void; // callback function that receives the scanned card data
-  onClose: () => void; // callback function to close the scanner
 }
 
 // QR Scanner component
-const QRScanner: React.FC<QRScannerProps> = ({ onScan, onClose }) => {
-  const [isScanning, setIsScanning] = useState(true); // controls camera visibility
-  const [isScanActive, setIsScanActive] = useState(true); // controls scan detection
+const QRScanner: React.FC<QRScannerProps> = ({ onScan }) => {
+  const [isScanning, setIsScanning] = useState(false); // controls camera visibility
 
   // get camera permissions
   const [permission, requestPermission] = useCameraPermissions();
@@ -29,21 +27,13 @@ const QRScanner: React.FC<QRScannerProps> = ({ onScan, onClose }) => {
     try {
       // parse qr code string into json
       const cardInfo = JSON.parse(result.data) as CardData;
-      setIsScanActive(false); // turn off scan detection
       onScan(cardInfo); // pass json to parent
     } catch (error) {
       Alert.alert(
         "Invalid QR Code",
         "The scanned code is not in the correct format."
       );
-      setIsScanActive(true); // allow to rescan
     }
-  };
-
-  // handle closing the scanner
-  const handleClose = () => {
-    setIsScanning(false);
-    setIsScanActive(true);
   };
 
   // check and/or request camera permissions when component mounts
@@ -55,11 +45,14 @@ const QRScanner: React.FC<QRScannerProps> = ({ onScan, onClose }) => {
           "Permission required",
           "Camera permission is required to scan QR Codes."
         );
+        console.log("Permission not granted.");
+        setIsScanning(false);
         return; // close scanner if permission isnt given
       }
     }
+    console.log("Permission granted, opening camera.");
     setIsScanning(true);
-    setIsScanActive(true);
+    return;
   };
 
   // show camera when scanning
@@ -71,7 +64,7 @@ const QRScanner: React.FC<QRScannerProps> = ({ onScan, onClose }) => {
         <CameraView
           style={styles.camera}
           facing="back"
-          onBarcodeScanned={isScanActive ? handleScan : undefined}
+          onBarcodeScanned={handleScan}
         >
           {/* Overlay w/ frame */}
           <View style={styles.overlay}>
@@ -81,31 +74,24 @@ const QRScanner: React.FC<QRScannerProps> = ({ onScan, onClose }) => {
 
           {/* Close btn */}
           <View style={styles.closeBtnContainer}>
-            <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={() => setIsScanning(false)}
+            >
               <Text style={styles.closeText}>Close Scanner</Text>
             </TouchableOpacity>
           </View>
-
-          {/* Scan again btn */}
-          {!isScanActive && (
-            <TouchableOpacity
-              style={styles.scanAgainButton}
-              onPress={() => setIsScanActive(true)}
-            >
-              <Text style={styles.scanAgainText}>Scan Again</Text>
-            </TouchableOpacity>
-          )}
         </CameraView>
       </View>
     );
+  } else {
+    // show scan button when not scanning
+    return (
+      <TouchableOpacity style={styles.scanButton} onPress={handlePermissions}>
+        <Text style={styles.scanButtonText}>Scan QR Code</Text>
+      </TouchableOpacity>
+    );
   }
-
-  // show scan button when not scanning
-  return (
-    <TouchableOpacity style={styles.scanButton} onPress={handlePermissions}>
-      <Text style={styles.scanButtonText}>Scan QR Code</Text>
-    </TouchableOpacity>
-  );
 };
 
 const styles = StyleSheet.create({
@@ -165,21 +151,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "600",
     textAlign: "center",
-  },
-  // scan again btn
-  scanAgainButton: {
-    position: "absolute",
-    bottom: 100,
-    alignSelf: "center",
-    padding: 15,
-    backgroundColor: "rgba(0, 0, 0, 0.7)",
-    borderRadius: 8,
-  },
-  // scan again btn txt
-  scanAgainText: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "600",
   },
   // scan btn
   scanButton: {

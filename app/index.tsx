@@ -1,6 +1,6 @@
 // import necessary libraries/methods and components
 import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "./components/Header";
 import UserFinances from "./components/UserFinances";
@@ -9,16 +9,18 @@ import QRScanner from "./components/QrScanner";
 
 // App/index.tsx is the top level of the app, where all components reside (the home page)
 export default function App() {
-  const [showScanner, setShowScanner] = useState(false); // state to manage scanner visibility
   // logic/Functions Section
-  const handleScan = () => {
-    console.log("getting data from qr scan.");
-    setShowScanner(false);
-  };
 
-  const handleCameraClose = () => {
-    console.log("closing camera view...");
-  }
+  // get the data from the card (pass it to the other components)
+  const handleScan = (cardInfo: CardData) => {
+    console.log("scanned card data:", cardInfo);
+
+    // provide user feedback
+    Alert.alert(
+      "Card Scanned",
+      `Profession: ${cardInfo.profession || "Unknown"}`
+    );
+  };
   // Tsx section (similar to html)
   return (
     // Safe Area avoids the phones header (battery, cell service)
@@ -29,7 +31,7 @@ export default function App() {
       {/* Qr Code Scanner */}
       <View style={[styles.appContent]}>
         <View style={styles.card}>
-          <QRScanner onScan={handleScan} onClose={handleCameraClose}/>
+          <QRScanner onScan={handleScan} />
         </View>
 
         {/* User's Finance's */}
@@ -50,7 +52,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1, // ensure app takes up whole screen
-    backgroundColor: "#121212", 
+    backgroundColor: "#121212",
   },
   appContent: {
     padding: 16,
