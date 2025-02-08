@@ -32,4 +32,5 @@ const Lawyer: profession = {
     "Credit Card Loans": 6000,
     "Retail Debt": 1000,
   },
+  image: "./app/assets/profesionIcons/Lawyer.png",
 };

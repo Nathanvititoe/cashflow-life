@@ -32,4 +32,5 @@ const Airline_Pilot: profession = {
     "Credit Card Loans": 22000,
     "Retail Debt": 1000,
   },
+  image: "./app/assets/profesionIcons/Airline_Pilot.png",
 };

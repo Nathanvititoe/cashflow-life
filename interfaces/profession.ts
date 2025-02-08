@@ -9,4 +9,5 @@ export default interface profession {
   expenses: MonthlyExpenses;
   assets: Assets;
   liabilities: Liabilities;
+  image: string;
 }

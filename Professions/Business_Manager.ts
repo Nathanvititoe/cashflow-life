@@ -32,4 +32,5 @@ const Business_Manager: profession = {
     "Credit Card Loans": 3000,
     "Retail Debt": 1000,
   },
+  image: "./app/assets/profesionIcons/Business_Manager.png",
 };

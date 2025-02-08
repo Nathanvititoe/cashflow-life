@@ -32,4 +32,5 @@ const Police_Officer: profession = {
     "Credit Card Loans": 2000,
     "Retail Debt": 1000,
   },
+  image: "./app/assets/profesionIcons/Police_Officer.png",
 };

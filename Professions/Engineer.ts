@@ -32,4 +32,5 @@ const Engineer: profession = {
     "Credit Card Loans": 4000,
     "Retail Debt": 1000,
   },
+  image: "./app/assets/profesionIcons/Engineer.png",
 };
