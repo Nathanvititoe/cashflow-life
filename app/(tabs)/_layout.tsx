@@ -7,18 +7,24 @@ import { SafeAreaView, StyleSheet, View } from "react-native";
 
 import blankUser from "../../data/testData/blankUser";
 import Theme from "../../interfaces/theme";
-import User from "../../interfaces/user";
+import User from "../../interfaces/User";
 import Header from "../components/Header/Header";
 
+interface UserContextType {
+  user: User;
+  setUser: React.Dispatch<React.SetStateAction<User>>;
+}
 // allows user to be accessed globally
-const UserContext = createContext<User>(blankUser);
+const UserContext = createContext<UserContextType>({
+  user: blankUser,
+  setUser: () => {},
+});
 
 // this is what can be called to get User in other components (has to be names useUser for custom react-hook)
 export function useUser() {
   return useContext(UserContext);
 }
 export const TabLayout = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [user, setUser] = useState<User>(blankUser);
 
   // load the user when the component mounts
@@ -36,33 +42,27 @@ export const TabLayout = () => {
       }
     };
     loadUser();
-  }, [user]);
+  }, []); // runs only on initial mount
 
-  // saves the username in local/async storage
-  const handleUpdateUsername = async (newName: string) => {
-    try {
-      const updatedUser = {
-        ...user,
-        name: newName,
-      };
-      await AsyncStorage.setItem("user", JSON.stringify(updatedUser));
-      setUser(updatedUser);
-    } catch (error) {
-      console.error("Error saving username:", error);
-    }
-  };
+  // save user to storage every time it changes
+  useEffect(() => {
+    const saveUser = async () => {
+      try {
+        await AsyncStorage.setItem("user", JSON.stringify(user));
+      } catch (error) {
+        console.error("Error saving user:", error);
+      }
+    };
+    saveUser();
+  }, [user]); // runs every time user is updated
 
   return (
-    <UserContext.Provider value={user}>
+    <UserContext.Provider value={{ user, setUser }}>
       <View style={styles.container}>
         {/* Safe Area avoids the phones header (battery, cell service) */}
         <SafeAreaView style={styles.container}>
           {/* Header */}
-          <Header
-            username={user.name}
-            updateUsername={handleUpdateUsername}
-            user={user}
-          />
+          <Header />
 
           {/* Tab Menu, controls page display */}
           <Tabs
@@ -82,6 +82,7 @@ export const TabLayout = () => {
               tabBarItemStyle: {
                 flex: 1,
                 width: "25%",
+                height: 65,
               },
               // // dark tabbar active colors
               // tabBarActiveTintColor: Theme.CFL_white,

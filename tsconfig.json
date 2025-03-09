@@ -2,14 +2,29 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "strict": true,
-    "jsx":"react-native",
+    "jsx": "react-native",
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": "./",
+    "paths": {
+      "interfaces/*": ["interfaces/*"],
+      "data/*": ["data/*"],
+      "components/*": ["app/components/*"],
+      "utils/*": ["utils/*"]
+    },
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true
   },
   "include": [
     "**/*.ts",
     "**/*.tsx",
+    "app/**/*.ts",
+    "app/**/*.tsx",
+    "data/**/*.ts",
+    "data/**/*.tsx",
     ".expo/types/**/*.ts",
-    "expo-env.d.ts",
-    "prettier.config.js"
+    "expo-env.d.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "dist"]
 }

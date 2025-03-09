@@ -11,21 +11,16 @@ import {
   View,
 } from "react-native";
 
+import { useUser } from "../../(tabs)/_layout";
+import blankUser from "../../../data/testData/blankUser";
 import Theme from "../../../interfaces/theme";
-import User from "../../../interfaces/user";
-import UserMenu from "../Menus/UserMenu";
 import ConfirmationModal from "../features/ConfirmationModal";
+import UserMenu from "../Menus/UserMenu";
 
-// type definition for header properties
-interface HeaderProps {
-  username: string;
-  updateUsername: (newName: string) => void;
-  user: User;
-}
-
-const Header: React.FC<HeaderProps> = ({ username, updateUsername, user }) => {
+const Header = () => {
+  const { user, setUser } = useUser();
   const [isEditing, setIsEditing] = useState(false);
-  const [tempName, setTempName] = useState(username); // user typed input
+  const [tempName, setTempName] = useState(user.name); // user typed input
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const [menuPosition, setMenuPosition] = useState({ top: 0, right: 0 });
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
@@ -45,7 +40,7 @@ const Header: React.FC<HeaderProps> = ({ username, updateUsername, user }) => {
 
   const handleEditUsername = () => {
     setIsMenuVisible(false); // close the menu
-    setTempName(username); // reset temp name to current username
+    setTempName(user.name); // reset temp name to current username
     // short delay for smoothness
     setTimeout(() => {
       setIsEditing(true); // trigger text input to be visible in header
@@ -54,9 +49,9 @@ const Header: React.FC<HeaderProps> = ({ username, updateUsername, user }) => {
 
   const handleSubmit = () => {
     if (tempName.trim()) {
-      updateUsername(tempName.trim()); // set to user input
+      setUser({ ...user, name: tempName.trim() }); // set to user input
     } else {
-      setTempName(username); // set back to original
+      setTempName(user.name); // set back to original
     }
     setIsEditing(false);
   };
@@ -64,13 +59,26 @@ const Header: React.FC<HeaderProps> = ({ username, updateUsername, user }) => {
   // clear async storage (wipes all saved data)
   const resetGame = async () => {
     try {
+      // clear local storage
       await AsyncStorage.clear();
-      console.log("Game has been reset.");
+      await AsyncStorage.removeItem("user");
+
+      // clear state
+      setUser(blankUser);
+      setTempName(blankUser.name);
+
+      // close menus
       setIsConfirmModalVisible(false);
       setIsMenuVisible(false);
+      checkStorage();
     } catch (error) {
       console.error("Failed to clear async storage:", error);
     }
+  };
+
+  const checkStorage = async () => {
+    const allKeys = await AsyncStorage.getAllKeys();
+    console.log("Stored Keys:", allKeys); // Should be empty after reset
   };
 
   const newGameRequest = () => {
@@ -98,11 +106,11 @@ const Header: React.FC<HeaderProps> = ({ username, updateUsername, user }) => {
               autoFocus
               selectTextOnFocus
               onSubmitEditing={handleSubmit}
-              placeholder={username}
+              placeholder={user.name}
               placeholderTextColor="rgba(34, 65, 29, 0.5)"
             />
           ) : (
-            <Text style={styles.username}>{username}</Text>
+            <Text style={styles.username}>{user.name}</Text>
           )}
         </View>
 

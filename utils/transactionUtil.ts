@@ -1,5 +1,5 @@
 import Theme from "../interfaces/theme";
-import Transaction from "../interfaces/transaction";
+import Transaction from "../interfaces/Transaction";
 
 // determines the color based on the transaction type
 export const getTypeColor = (type: Transaction["type"]) => {

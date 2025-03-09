@@ -3,22 +3,18 @@ import { useCameraPermissions } from "expo-camera";
 import React, { useState } from "react";
 import { Alert, StyleSheet, Text, TouchableOpacity } from "react-native";
 
+import QRType, { QRData } from "../../../interfaces/qrTypes";
 import Theme from "../../../interfaces/theme";
 import ScannerModal from "./ScannerModal";
 
 // Properties passed to the Scanner Button component (similiar to a class definition)
 interface ScannerButtonProps {
-  onScan: (data: string) => void; // callback to get data from Scanner Modal
+  onScan: (data: QRData) => void; // callback to get data from Scanner Modal
 }
-
-export type scanResult = {
-  type: string;
-  data: string;
-};
 
 const ScannerButton: React.FC<ScannerButtonProps> = ({ onScan }) => {
   // Logic/Functions Section
-  const [isModalVisible, setModalVisible] = useState(false); // boolean for modal visibility
+  const [isCameraVisible, setCameraVisible] = useState(false); // boolean for camera modal visibility
   const [permission, requestPermission] = useCameraPermissions(); // set camera permission hook
 
   // handle opening the qr code scanner
@@ -35,14 +31,14 @@ const ScannerButton: React.FC<ScannerButtonProps> = ({ onScan }) => {
         return;
       }
     }
-    setModalVisible(true); // open modal if we have permission
+    setCameraVisible(true); // open modal if we have permission
   };
 
   // handles the logic post scan
-  const handleScan = ({ type, data }: scanResult) => {
-    if (type === "qr") {
-      onScan(data); // pass data back to index.tsx
-      setModalVisible(false); // close the modal
+  const handleScan = (scan: QRType) => {
+    if (scan.type === "qr") {
+      onScan(scan.data); // pass data back to home.tsx
+      setCameraVisible(false); // close the modal
     } else {
       Alert.alert("Not a QR Code", "The Scanned item must be a QR code.");
     }
@@ -57,10 +53,10 @@ const ScannerButton: React.FC<ScannerButtonProps> = ({ onScan }) => {
       </TouchableOpacity>
 
       {/* QR Scanner Modal Component */}
-      {isModalVisible && (
+      {isCameraVisible && (
         <ScannerModal
-          visible={isModalVisible}
-          onClose={() => setModalVisible(false)}
+          visible={isCameraVisible}
+          onClose={() => setCameraVisible(false)}
           onScan={handleScan}
         />
       )}

@@ -4,10 +4,7 @@
  *  and points to the correct component
  */
 import FinancialStatement from "../components/UserFinances/FinancialStatement";
-import { useUser } from "./_layout";
 
 export default function FinancesTab() {
-  const user = useUser();
-
-  return <FinancialStatement user={user} />;
+  return <FinancialStatement />;
 }

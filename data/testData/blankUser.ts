@@ -1,4 +1,4 @@
-import User from "../../interfaces/user";
+import User from "../../interfaces/User";
 
 const blankUser: User = {
   name: "Username",
@@ -36,7 +36,7 @@ const blankUser: User = {
   },
   Children: 0,
   ChildCost: 0,
-  image: "",
+  professionIcon: { name: "questioncircle", library: "AntDesign" },
 };
 
 export default blankUser;

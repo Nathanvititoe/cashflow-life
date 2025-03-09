@@ -1,15 +1,24 @@
 // import necessary libraries/methods and components
 import { BarcodeScanningResult, CameraView } from "expo-camera";
 import React, { useState } from "react";
-import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Alert,
+  Modal,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
+import QRType from "../../../interfaces/qrTypes";
 import Theme from "../../../interfaces/theme";
+import ConfirmationModal from "../features/ConfirmationModal";
 
 // Scanner modal properties definition
 interface ScannerModalProps {
   visible: boolean;
   onClose: () => void;
-  onScan: (result: { type: string; data: string }) => void;
+  onScan: (scan: QRType) => void;
 }
 // ScannerModal function, passing it the properties object
 const ScannerModal: React.FC<ScannerModalProps> = ({
@@ -19,13 +28,88 @@ const ScannerModal: React.FC<ScannerModalProps> = ({
 }) => {
   // Logic/Functions Section
   const [isScanning, setIsScanning] = useState(true); // state to know when it is actively scanning
+  const [popupVisible, setPopupVisible] = useState(false); // state controls post scan popup
+  const [scanData, setScanData] = useState<QRType | null>(null);
+  const [popupInfo, setPopupInfo] = useState<{
+    title: string;
+    message: string;
+    confirmText: string;
+    cancelText: string;
+  }>({ title: "", message: "", confirmText: "", cancelText: "" });
 
   // how app will handle a scanned qr code
   const handleScan = (result: BarcodeScanningResult) => {
     if (!isScanning) return;
 
     setIsScanning(false);
-    onScan({ type: result.type, data: result.data });
+    try {
+      const scan: QRType = {
+        type: result.type,
+        data: JSON.parse(result.data),
+      };
+      // get popup info based on scan type
+      const popup = getPopupMessage(scan);
+      onScan(scan);
+      if (popup) setPopupInfo(popup);
+
+      //open popup and set state data for scan
+      setPopupVisible(true);
+      setScanData(scan);
+    } catch (error) {
+      console.error("QR does not contain valid JSON data", error);
+      Alert.alert(
+        "QR Code Error", // title
+        "QR Code does not contain the expected format.", // message
+        [
+          {
+            text: "OK",
+            onPress: () => {
+              // allow rescan after clearing error
+              setIsScanning(true);
+            },
+          },
+        ]
+      );
+    }
+  };
+  // figures out if scanned data is transaction, profession or other and returns a popup info obj
+  const getPopupMessage = (
+    scan: QRType
+  ):
+    | {
+        title: string;
+        message: string;
+        confirmText: string;
+        cancelText: string;
+      }
+    | undefined => {
+    if (scan && scan.data) {
+      if (scan.data.scanType === "Transaction") {
+        return {
+          ...popupInfo,
+          title: `Transaction`,
+          message: `Change to ${scan.data.type}`,
+          confirmText: `Confirm`,
+          cancelText: `Cancel`,
+        };
+      } else if (scan.data.scanType === "Profession") {
+        return {
+          ...popupInfo,
+          title: `New Job!`,
+          message: `Congrats you're a ${scan.data.name}!`,
+          confirmText: `Thanks!`,
+          cancelText: `Cancel`,
+        };
+      }
+      // user case here?
+      return {
+        ...popupInfo,
+        title: "",
+        message: `Unfortunately... We didn't recognize this scan`,
+        confirmText: `Ok`,
+        cancelText: `Cancel`,
+      };
+    }
   };
 
   // Tsx Section
@@ -34,7 +118,7 @@ const ScannerModal: React.FC<ScannerModalProps> = ({
     <Modal
       visible={visible}
       onRequestClose={onClose}
-      animationType="none"
+      animationType="fade"
       presentationStyle="fullScreen"
     >
       {/* Camera Container */}
@@ -56,14 +140,34 @@ const ScannerModal: React.FC<ScannerModalProps> = ({
             <Text style={styles.closeText}>Close</Text>
           </TouchableOpacity>
 
+          {popupVisible && (
+            <ConfirmationModal
+              isVisible={popupVisible}
+              message={popupInfo.message}
+              onConfirm={() => {
+                setPopupVisible(false);
+                onScan(scanData!);
+              }}
+              onCancel={() => setPopupVisible(false)}
+            />
+          )}
           {/* Scan again / Redo button */}
           {!isScanning && (
-            <TouchableOpacity
-              style={styles.tryAgainButton}
-              onPress={() => setIsScanning(true)}
+            <Modal
+              visible={!isScanning}
+              onRequestClose={onClose}
+              presentationStyle="fullScreen"
+              animationType="none"
             >
-              <Text style={styles.tryAgainText}>Try Again</Text>
-            </TouchableOpacity>
+              <View style={styles.tryAgainContainer}>
+                <TouchableOpacity
+                  style={styles.tryAgainButton}
+                  onPress={() => setIsScanning(true)}
+                >
+                  <Text style={styles.tryAgainText}>Try Again</Text>
+                </TouchableOpacity>
+              </View>
+            </Modal>
           )}
         </CameraView>
       </View>
@@ -123,6 +227,11 @@ const styles = StyleSheet.create({
     color: Theme.CFL_white,
     fontSize: 16,
     fontWeight: "600",
+  },
+  // try again container
+  tryAgainContainer: {
+    justifyContent: "center",
+    alignItems: "center",
   },
   // try again btn
   tryAgainButton: {

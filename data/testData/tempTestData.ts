@@ -1,9 +1,9 @@
-import User from "../../interfaces/user";
+import User from "../../interfaces/User";
 
 // temporary testing object for full user data
 const testUser: User = {
   name: "John Smith",
-  profession: "Software Developer",
+  profession: "Teacher",
   totalIncome: 8500,
   incomeExplained: {
     Salary: 7000,
@@ -37,7 +37,7 @@ const testUser: User = {
   },
   Children: 2,
   ChildCost: 0,
-  image: "/assets/avatars/glassesMan.png",
+  professionIcon: { name: "chalkboard-teacher", library: "FontAwesome5" },
 };
 
 export default testUser;
