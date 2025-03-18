@@ -25,5 +25,5 @@ export interface RealEstate {
   Mortgage: number;
   "Down Payment": number;
   purchaseTime: string;
-  saleTime: string;
+  saleTime?: string;
 }
