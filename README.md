@@ -85,12 +85,12 @@ Ensure you have the following installed:
 - **typescript**: ^5.7.3
 
 ## 🔄 Recent Commits
-- Auto-update README (#63) (Nathan Vititoe)
-- Auto-update README for commit: Auto-update README (#62) (Nathanvititoe)
-- Auto-update README (#62) (Nathan Vititoe)
+- added read me to ignore for workflow (Nathanvititoe)
+- prevent m conflicts3 (Nathanvititoe)
+- Auto-update README (#64) (Nathan Vititoe)
 
 ## 👥 Contributors
-- [@Nathanvititoe](https://github.com/Nathanvititoe) (⭐ 144 commits)
+- [@Nathanvititoe](https://github.com/Nathanvititoe) (⭐ 150 commits)
 - [@ClaytonHin](https://github.com/ClaytonHin) (⭐ 12 commits)
 - [@D-flyRobotics](https://github.com/D-flyRobotics) (⭐ 2 commits)
 - [@expo-bot](https://github.com/expo-bot) (⭐ 1 commits)
@@ -99,4 +99,4 @@ Ensure you have the following installed:
 
 ---
 
-_Last updated: 2025-03-19 23:08:11 -0400_
+_Last updated: 2025-03-19 23:11:06 -0400_
