@@ -76,6 +76,46 @@ jobs:
           base: main
           labels: "auto-merge, README update"
 
+      - name: Wait for Status Checks
+        if: env.CHANGES_DETECTED == 'true' && steps.create-pull-request.outputs.pull-request-number != ''
+        run: |
+          PR_NUMBER="${{ steps.create-pull-request.outputs.pull-request-number }}"
+          echo "Waiting for status checks to complete on PR #${PR_NUMBER}..."
+          
+          # Wait for up to 10 minutes (60 x 10 = 600 seconds)
+          MAX_ATTEMPTS=60
+          WAIT_SECONDS=10
+          
+          for ((i=1; i<=MAX_ATTEMPTS; i++)); do
+            # Check if the "Expo Compatibility Check" is successful
+            STATUS=$(gh pr view ${PR_NUMBER} --json statusCheckRollup --jq '.statusCheckRollup[] | select(.name=="Expo Compatibility Check") | .status')
+            CONCLUSION=$(gh pr view ${PR_NUMBER} --json statusCheckRollup --jq '.statusCheckRollup[] | select(.name=="Expo Compatibility Check") | .conclusion')
+            
+            echo "Attempt $i/$MAX_ATTEMPTS - Status: $STATUS, Conclusion: $CONCLUSION"
+            
+            if [[ "$STATUS" == "COMPLETED" && "$CONCLUSION" == "SUCCESS" ]]; then
+              echo "Status check passed successfully!"
+              echo "STATUS_CHECKS_PASSED=true" >> $GITHUB_ENV
+              break
+            elif [[ "$CONCLUSION" == "FAILURE" || "$CONCLUSION" == "CANCELLED" ]]; then
+              echo "Status check failed or was cancelled."
+              echo "STATUS_CHECKS_PASSED=false" >> $GITHUB_ENV
+              break
+            else
+              echo "Status check still pending. Waiting ${WAIT_SECONDS} seconds..."
+              sleep ${WAIT_SECONDS}
+            fi
+            
+            # If we've reached the max attempts and haven't broken out of the loop
+            if [[ $i -eq $MAX_ATTEMPTS ]]; then
+              echo "Timed out waiting for status checks to complete."
+              echo "STATUS_CHECKS_PASSED=false" >> $GITHUB_ENV
+            fi
+          done
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
       - name: Verify PR Creation
         run: |
           if [[ "${{ env.CHANGES_DETECTED }}" == "true" && -z "${{ steps.create-pull-request.outputs.pull-request-number }}" ]]; then
