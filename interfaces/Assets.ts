@@ -22,6 +22,10 @@ export interface Stocks {
   "Trading Range"?: string;
 }
 
+export interface Babies{
+  "Baby Count": number;
+}
+
 export interface RealEstate {
   // for house/business assets and their "transaction"
   name: string;
