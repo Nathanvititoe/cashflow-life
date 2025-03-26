@@ -4,13 +4,22 @@ export default interface Assets {
 }
 
 export interface Investments {
-  Mortgage: number;
-  "Real Estate": RealEstate;
-  Stocks: number;
-  Gold_Count: number;
-  Bitcoin: number;
-  "Bitcoin Value": number;
-  "Certificate Deposit": number;
+  Mortgage?: number;
+  "Real Estate"?: RealEstate;
+  Stocks?: Stocks;
+  Gold_Count?: number;
+  Bitcoin?: number;
+  "Bitcoin Value"?: number;
+  "Certificate Deposit"?: number;
+  "Other Expenses"?: number;
+}
+
+export interface Stocks {
+  description: string;
+  symbol: string;
+  interest?: number;
+  "Purchase Price"?: number;
+  "Trading Range"?: string;
 }
 
 export interface RealEstate {
