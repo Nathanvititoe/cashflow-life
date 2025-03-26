@@ -1,3 +1,5 @@
+import { RealEstateTransaction } from "./Assets";
+
 export interface Transaction {
   scanType: "Transaction";
   name: string;
@@ -6,6 +8,7 @@ export interface Transaction {
   description: string;
   amount: number;
   fieldName: string;
+  realEstate?: RealEstateTransaction;
 }
 
 export default Transaction;

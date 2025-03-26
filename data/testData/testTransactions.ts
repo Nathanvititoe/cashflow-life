@@ -3,22 +3,23 @@ import Transaction from "../../interfaces/Transaction";
 export const testTransactions: Transaction[] = [
   {
     scanType: "Transaction",
-    name: "Salary Increase",
+    name: "Salary Change",
     timestamp: "2025-02-01 02:30",
     type: "salary",
     description: "user got a promotion to manager!",
-    amount: 1000,
+    amount: 15000,
     fieldName: "income.salary",
   },
   {
     scanType: "Transaction",
-    name: "Car Payment",
+    name: "House Purchase",
     timestamp: "2025-02-08T00:30", // test ISO format timestamp
-    type: "expense",
+    type: "asset",
     description: "User had to pay their monthly car payment",
     amount: -400,
     fieldName: "expenses.carPayment",
   },
+
   {
     scanType: "Transaction",
     name: "Car Purchase",

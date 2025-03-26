@@ -2,14 +2,7 @@
 import { Feather } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useState } from "react";
-import {
-  Dimensions,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Dimensions, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 import blankUser from "../../../data/testData/blankUser";
 import Theme from "../../../interfaces/theme";
@@ -117,8 +110,7 @@ const Header = () => {
           style={styles.menu}
           onPress={handleMenuVisibility}
           activeOpacity={0.7}
-          ref={menuButtonRef}
-        >
+          ref={menuButtonRef}>
           <Feather name="menu" size={30} color={Theme.CFL_black} />
         </TouchableOpacity>
       </View>

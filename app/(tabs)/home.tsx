@@ -1,12 +1,6 @@
 // import necessary libraries/methods and components
 import React from "react";
-import {
-  ActivityIndicator,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { QRData } from "../../interfaces/qrTypes";
 import Theme from "../../interfaces/theme";
@@ -16,11 +10,10 @@ import ScannerButton from "../components/QrCodeScanner/ScannerButton";
 import {
   createProfessionTransaction,
   populateFirstProfession,
-  populateLaterProfession
+  populateLaterProfession,
 } from "../components/QrCodeScanner/ScannerLogic";
 import LatestTransaction from "../components/TransactionLog/LatestTransaction";
 import FinancialOverview, { calculateNetWorth } from "../components/UserFinances/FinancialOverview";
-
 
 export const Home = () => {
   // state/ref management section
@@ -59,8 +52,7 @@ export const Home = () => {
     <ScrollView
       style={styles.scrollView}
       contentContainerStyle={styles.scrollContent}
-      showsVerticalScrollIndicator={false}
-    >
+      showsVerticalScrollIndicator={false}>
       <View style={styles.content}>
         {/* Qr Scanner Button */}
         <View style={styles.card}>

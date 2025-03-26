@@ -27,18 +27,9 @@ const UserMenu: React.FC<UserMenuProps> = ({
   // Tsx Section
   return (
     // Modal for overlay
-    <Modal
-      visible={isVisible}
-      transparent
-      animationType="fade"
-      onRequestClose={onClose}
-    >
+    <Modal visible={isVisible} transparent animationType="fade" onRequestClose={onClose}>
       {/* Allows menu close */}
-      <TouchableOpacity
-        style={styles.overlay}
-        onPress={onClose}
-        activeOpacity={1}
-      >
+      <TouchableOpacity style={styles.overlay} onPress={onClose} activeOpacity={1}>
         {/* Menu Container */}
         <View
           style={[
@@ -47,8 +38,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
               top: anchorPosition.top + 40, // keep menu below the header
               right: anchorPosition.right + 16, // align left/right with menu btn
             },
-          ]}
-        >
+          ]}>
           {/* Edit Username Btn */}
           <TouchableOpacity style={styles.menuItem} onPress={onEditUsername}>
             <Feather name="edit" size={18} color={Theme.CFL_light_gray} />
@@ -56,14 +46,9 @@ const UserMenu: React.FC<UserMenuProps> = ({
           </TouchableOpacity>
 
           {/* New Game btn */}
-          <TouchableOpacity
-            style={[styles.menuItem, styles.newGameBtn]}
-            onPress={onNewGame}
-          >
+          <TouchableOpacity style={[styles.menuItem, styles.newGameBtn]} onPress={onNewGame}>
             <Feather name="trash-2" size={18} color={Theme.CFL_red} />
-            <Text style={[styles.menuItemText, styles.newGameTxt]}>
-              Reset Game
-            </Text>
+            <Text style={[styles.menuItemText, styles.newGameTxt]}>Reset Game</Text>
           </TouchableOpacity>
         </View>
       </TouchableOpacity>

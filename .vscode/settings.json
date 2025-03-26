@@ -9,16 +9,14 @@
     "*.yml": "yaml"
   },
   "yaml.schemas": {
-    "none": [
-      "/.github/workflows/*.yml"
-    ]
+    "none": ["/.github/workflows/*.yml"]
   },
   "yaml.validate": false,
   "yaml.schemaStore.enable": false,
   "problems.decorations.enabled": false,
   "files.exclude": {
     "**/.git": true,
-    "**/.github": true,
+    "**/.github": true
   },
   "typescript.updateImportsOnFileMove.enabled": "always",
   "javascript.preferences.importModuleSpecifier": "relative",
@@ -31,12 +29,7 @@
   "editor.formatOnPaste": true,
   "editor.formatOnType": true,
   "eslint.format.enable": true,
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact"
-  ],
+  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
   "[typescript]": {
     "editor.defaultFormatter": "vscode.typescript-language-features"
   },

@@ -45,8 +45,7 @@ export const TabLayout = () => {
                 // // dark tabbarinactive colors
                 // tabBarInactiveTintColor: Theme.CFL_inactive_tab_font,
                 // tabBarInactiveBackgroundColor: Theme.CFL_inactive_tab,
-              }}
-            >
+              }}>
               <Tabs.Screen
                 name="home"
                 options={{
@@ -62,11 +61,7 @@ export const TabLayout = () => {
                 options={{
                   tabBarLabel: "Finances",
                   tabBarIcon: ({ color, size }) => (
-                    <MaterialIcons
-                      name="attach-money"
-                      size={size}
-                      color={color}
-                    />
+                    <MaterialIcons name="attach-money" size={size} color={color} />
                   ),
                   tabBarLabelStyle: styles.tabLabel,
                 }}

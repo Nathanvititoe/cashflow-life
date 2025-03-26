@@ -8,11 +8,7 @@ const titleFont =
       : "sans-serif";
 
 const primaryFont =
-  Platform.OS === "ios"
-    ? "System"
-    : Platform.OS === "android"
-      ? "sans-serif-medium"
-      : "sans-serif";
+  Platform.OS === "ios" ? "System" : Platform.OS === "android" ? "sans-serif-medium" : "sans-serif";
 
 export const Theme = {
   // colors

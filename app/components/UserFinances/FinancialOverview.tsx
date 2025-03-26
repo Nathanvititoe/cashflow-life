@@ -9,21 +9,20 @@ import formatUSD from "../../../utils/currencyUtil";
 import { useUser } from "../context/UserProvider";
 import ProfessionIcon from "../features/ProfessionIcon";
 
-
 // Calculate net worth (Assets - Liabilities)
 export const calculateNetWorth = (user: User, setUser: Dispatch<SetStateAction<User>>): void => {
   const totalAssets = Object.values(user.Assets).reduce((sum, value) => sum + value, 0);
   const totalLiabilities = Object.values(user.Liabilities).reduce((sum, value) => sum + value, 0);
   const netWorth = totalAssets - totalLiabilities;
-  setUser((prevUser) => ({ ...prevUser, totalAssets, totalLiabilites: totalLiabilities, netWorth }))
+  setUser(prevUser => ({ ...prevUser, totalAssets, totalLiabilites: totalLiabilities, netWorth }));
 };
 
 // calculate total income (Salary + passive income) and total expenses (all expenses summed)
 export const calculateTotals = (user: User, setUser: Dispatch<SetStateAction<User>>) => {
-  const totalIncome = addValuesTogether(user.income["Passive Income"]) + user.income.Salary
+  const totalIncome = addValuesTogether(user.income["Passive Income"]) + user.income.Salary;
   const totalExpenses = addValuesTogether(user.expenses);
-  setUser((prevUser) => ({ ...prevUser, totalIncome, totalExpenses }))
-}
+  setUser(prevUser => ({ ...prevUser, totalIncome, totalExpenses }));
+};
 
 const FinancialOverview = () => {
   const { user, setUser } = useUser();
@@ -31,14 +30,14 @@ const FinancialOverview = () => {
   // update user everytime assets, or liabilities changes
   useEffect(() => {
     calculateNetWorth(user, setUser);
-  }, [user.Liabilities, user.Assets])
+  }, [user.Liabilities, user.Assets]);
 
   const getCashflow = (): number => {
     if (user.totalExpenses) {
-      return (addValuesTogether(user.income["Passive Income"])) - user.totalExpenses;
+      return addValuesTogether(user.income["Passive Income"]) - user.totalExpenses;
     }
     return 0;
-  }
+  };
   // Tsx Section
   return (
     <View style={styles.container}>
@@ -47,11 +46,7 @@ const FinancialOverview = () => {
         <View style={styles.headerContainer}>
           {/* Title */}
           <View style={styles.titleContainer}>
-            <Text
-              style={styles.titleUsername}
-              numberOfLines={1}
-              ellipsizeMode="tail"
-            >
+            <Text style={styles.titleUsername} numberOfLines={1} ellipsizeMode="tail">
               {user.name}'s
             </Text>
             <Text style={styles.title}> Financial Overview</Text>
@@ -65,11 +60,7 @@ const FinancialOverview = () => {
       {/* Profession Section */}
       <View style={styles.professionContainer}>
         <View style={styles.professionIconContainer}>
-          <ProfessionIcon
-            icon={user.professionIcon}
-            size={35}
-            color={Theme.CFL_midnight}
-          />
+          <ProfessionIcon icon={user.professionIcon} size={35} color={Theme.CFL_midnight} />
         </View>
         <Text style={styles.professionTxt}>{user.profession}</Text>
       </View>
@@ -80,9 +71,7 @@ const FinancialOverview = () => {
       {/* Monthly Overview */}
       <View style={styles.row}>
         <Text style={styles.label}>Salary:</Text>
-        <Text style={styles.value}>
-          {formatUSD(user.income.Salary)}
-        </Text>
+        <Text style={styles.value}>{formatUSD(user.income.Salary)}</Text>
       </View>
 
       <View style={styles.row}>
@@ -99,14 +88,7 @@ const FinancialOverview = () => {
 
       <View style={styles.row}>
         <Text style={styles.label}>Cashflow:</Text>
-        <Text
-          style={[
-            styles.value,
-            getCashflow() >= 0
-              ? styles.positive
-              : styles.negative,
-          ]}
-        >
+        <Text style={[styles.value, getCashflow() >= 0 ? styles.positive : styles.negative]}>
           {formatUSD(getCashflow())}
         </Text>
       </View>
@@ -117,26 +99,17 @@ const FinancialOverview = () => {
       {/* Assets/Liabilities Overview */}
       <View style={styles.row}>
         <Text style={styles.label}>Total Assets:</Text>
-        <Text style={styles.value}>
-          {formatUSD(user.totalAssets ?? 0)}
-        </Text>
+        <Text style={styles.value}>{formatUSD(user.totalAssets ?? 0)}</Text>
       </View>
 
       <View style={styles.row}>
         <Text style={styles.label}>Total Liabilities:</Text>
-        <Text style={styles.value}>
-          {formatUSD(user.totalLiabilites ?? 0)}
-        </Text>
+        <Text style={styles.value}>{formatUSD(user.totalLiabilites ?? 0)}</Text>
       </View>
 
       <View style={styles.row}>
         <Text style={styles.label}>Net Worth:</Text>
-        <Text
-          style={[
-            styles.value,
-            user.netWorth ?? 0 >= 0 ? styles.positive : styles.negative,
-          ]}
-        >
+        <Text style={[styles.value, (user.netWorth ?? 0 >= 0) ? styles.positive : styles.negative]}>
           {formatUSD(user.netWorth ?? 0)}
         </Text>
       </View>

@@ -16,18 +16,9 @@ const TransactionLog = () => {
     <View style={styles.card} key={transaction.timestamp}>
       <View style={styles.transactionCard}>
         <View style={styles.transactionHeader}>
-          <Text style={styles.timestamp}>
-            {transaction.timestamp}
-          </Text>
-          <View
-            style={[
-              styles.typeTag,
-              { backgroundColor: getTypeColor(transaction.type) },
-            ]}
-          >
-            <Text style={styles.typeText}>
-              {transaction.type.toUpperCase()}
-            </Text>
+          <Text style={styles.timestamp}>{transaction.timestamp}</Text>
+          <View style={[styles.typeTag, { backgroundColor: getTypeColor(transaction.type) }]}>
+            <Text style={styles.typeText}>{transaction.type.toUpperCase()}</Text>
           </View>
         </View>
 
@@ -36,13 +27,7 @@ const TransactionLog = () => {
         <View style={styles.changesContainer}>
           <Text style={styles.description}>{transaction.description}</Text>
           <View style={styles.fieldChange}>
-            <Text
-              style={
-                transaction.amount > 0
-                  ? styles.positiveAmount
-                  : styles.negativeAmount
-              }
-            >
+            <Text style={transaction.amount > 0 ? styles.positiveAmount : styles.negativeAmount}>
               {formatUSD(transaction.amount)}
             </Text>
           </View>

@@ -24,10 +24,7 @@ const ScannerButton: React.FC<ScannerButtonProps> = ({ onScan }) => {
       const permissionResult = await requestPermission();
       if (!permissionResult?.granted) {
         // If permission is denied, notify user
-        Alert.alert(
-          "Permission required",
-          "Camera permission is required to scan QR Codes."
-        );
+        Alert.alert("Permission required", "Camera permission is required to scan QR Codes.");
         return;
       }
     }

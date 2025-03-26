@@ -1,16 +1,9 @@
 // import necessary libraries/methods and components
 import { BarcodeScanningResult, CameraView } from "expo-camera";
 import React, { useState } from "react";
-import {
-  Alert,
-  Modal,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Alert, Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-// import AirlinePilotData from "../../../data/Professions/AirlinePilot/Airline_Pilot.json";
+import AirlinePilotData from "../../../data/Professions/AirlinePilot/Airline_Pilot.json";
 // import DoctorData from "../../../data/Professions/Doctor/Doctor.json";
 // import TruckDriverData from "../../../data/Professions/TruckDriver/Truck_Driver.json";
 import QRType from "../../../interfaces/qrTypes";
@@ -26,11 +19,7 @@ interface ScannerModalProps {
   onScan: (scan: QRType) => void;
 }
 // ScannerModal function, passing it the properties object
-const ScannerModal: React.FC<ScannerModalProps> = ({
-  visible,
-  onClose,
-  onScan,
-}) => {
+const ScannerModal: React.FC<ScannerModalProps> = ({ visible, onClose, onScan }) => {
   // Logic/Functions Section
   const [isScanning, setIsScanning] = useState(true); // state to know when it is actively scanning
   const [popupVisible, setPopupVisible] = useState(false); // state controls post scan popup
@@ -44,20 +33,20 @@ const ScannerModal: React.FC<ScannerModalProps> = ({
   }>({ title: "", message: "", confirmText: "", cancelText: "" });
 
   // // TODO: remove after finalized functionality
-  // const simulatedResult: BarcodeScanningResult = {
-  //   type: "qr",
-  //   data: JSON.stringify(AirlinePilotData),
-  //   cornerPoints: [
-  //     { x: 100, y: 100 },
-  //     { x: 200, y: 100 },
-  //     { x: 200, y: 200 },
-  //     { x: 100, y: 200 },
-  //   ],
-  //   bounds: {
-  //     origin: { x: 100, y: 100 },
-  //     size: { width: 100, height: 100 },
-  //   },
-  // };
+  const simulatedResult: BarcodeScanningResult = {
+    type: "qr",
+    data: JSON.stringify(AirlinePilotData),
+    cornerPoints: [
+      { x: 100, y: 100 },
+      { x: 200, y: 100 },
+      { x: 200, y: 200 },
+      { x: 100, y: 200 },
+    ],
+    bounds: {
+      origin: { x: 100, y: 100 },
+      size: { width: 100, height: 100 },
+    },
+  };
 
   // how app will handle a scanned qr code
   const handleScan = (result: BarcodeScanningResult) => {
@@ -84,55 +73,53 @@ const ScannerModal: React.FC<ScannerModalProps> = ({
         [
           {
             text: "OK",
-            onPress: () => {
-              // allow rescan after clearing error
-              setIsScanning(true);
-            },
+            onPress: () => setIsScanning(true),
           },
         ]
       );
     }
   };
 
-  // figures out if scanned data is transaction, profession or other and returns a popup info obj
+  // returns an obj to display the popup message
   const getPopupMessage = (
     scan: QRType
   ):
     | {
-      title: string;
-      professionIcon?: Icon;
-      message: string;
-      confirmText: string;
-      cancelText: string;
-    }
+        title: string;
+        professionIcon?: Icon;
+        message: string;
+        confirmText: string;
+        cancelText: string;
+      }
     | undefined => {
     if (scan && scan.data) {
-      if (scan.data.scanType === "Transaction") {
-        return {
-          ...popupInfo,
-          title: `Transaction`,
-          message: `Change to ${scan.data.type}`,
-          confirmText: `Confirm`,
-          cancelText: `Cancel`,
-        };
-      } else if (scan.data.scanType === "Profession") {
-        return {
-          ...popupInfo,
-          title: `Congrats, You're Hired!`,
-          professionIcon: getIcon(scan.data.name),
-          message: `${scan.data.name}`,
-          confirmText: `Thanks!`,
-          cancelText: `Cancel`,
-        };
+      switch (scan.data.scanType) {
+        case "Transaction":
+          return {
+            ...popupInfo,
+            title: `Transaction`,
+            message: `A change has been made to ${scan.data.type}: \n  ${scan.data.amount}`,
+            confirmText: `Confirm`,
+            cancelText: `Cancel`,
+          };
+        case "Profession":
+          return {
+            ...popupInfo,
+            title: `Congrats, You're Hired!`,
+            professionIcon: getIcon(scan.data.name),
+            message: `${scan.data.name}`,
+            confirmText: `Thanks!`,
+            cancelText: `Cancel`,
+          };
+        default:
+          return {
+            ...popupInfo,
+            title: "",
+            message: `Unfortunately... We didn't recognize this scan`,
+            confirmText: `Ok`,
+            cancelText: `Cancel`,
+          };
       }
-      // user case here?
-      return {
-        ...popupInfo,
-        title: "",
-        message: `Unfortunately... We didn't recognize this scan`,
-        confirmText: `Ok`,
-        cancelText: `Cancel`,
-      };
     }
   };
 
@@ -146,9 +133,9 @@ const ScannerModal: React.FC<ScannerModalProps> = ({
   };
 
   // // TODO: remove after finalized functionality
-  // const testScan = () => {
-  //   handleScan(simulatedResult);
-  // };
+  const testScan = () => {
+    handleScan(simulatedResult);
+  };
 
   // Tsx Section
   return (
@@ -157,16 +144,14 @@ const ScannerModal: React.FC<ScannerModalProps> = ({
       visible={visible}
       onRequestClose={onClose}
       animationType="fade"
-      presentationStyle="fullScreen"
-    >
+      presentationStyle="fullScreen">
       {/* Camera Container */}
       <View style={styles.container}>
         {/* Camera */}
         <CameraView
           style={styles.camera}
           facing="back"
-          onBarcodeScanned={isScanning ? handleScan : undefined}
-        >
+          onBarcodeScanned={isScanning ? handleScan : undefined}>
           {/* Overlay with QR scan frame */}
           <View style={styles.backgroundOverlay}>
             <View style={styles.innerOverlay}>
@@ -177,8 +162,8 @@ const ScannerModal: React.FC<ScannerModalProps> = ({
 
           {/* TODO: FIX THIS AFTER TESTING */}
           {/* Close button */}
-          <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-            {/* <TouchableOpacity style={styles.closeButton} onPress={testScan}> */}
+          {/* <TouchableOpacity style={styles.closeButton} onPress={onClose}> */}
+          <TouchableOpacity style={styles.closeButton} onPress={testScan}>
             <Text style={styles.closeText}>Close</Text>
           </TouchableOpacity>
 
@@ -187,9 +172,7 @@ const ScannerModal: React.FC<ScannerModalProps> = ({
             <ConfirmationModal
               isVisible={popupVisible}
               title={popupInfo.title ? popupInfo.title : undefined}
-              professionIcon={
-                popupInfo.professionIcon ? popupInfo.professionIcon : undefined
-              }
+              professionIcon={popupInfo.professionIcon ? popupInfo.professionIcon : undefined}
               message={popupInfo.message}
               onConfirm={handleScanConfirm}
               onCancel={() => {

@@ -5,7 +5,7 @@ export default interface Assets {
 
 export interface Investments {
   Mortgage: number;
-  "Real Estate": RealEstate;
+  "Real Estate": RealEstateTransaction;
   Stocks: number;
   Gold_Count: number;
   Bitcoin: number;
@@ -13,7 +13,7 @@ export interface Investments {
   "Certificate Deposit": number;
 }
 
-export interface RealEstate {
+export interface RealEstateTransaction {
   // for house/business assets and their "transaction"
   name: string;
   type: "house" | "business"; // add more types based on cards

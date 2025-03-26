@@ -1,6 +1,6 @@
 import { execSync } from "child_process";
 import fs from "fs";
-import https from 'https';
+import https from "https";
 import path from "path";
 
 // GitHub Repository Info
@@ -10,49 +10,58 @@ const GITHUB_API_URL = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/
 
 // Function to get dependencies from package.json
 function getDependencies(): string {
-    const packageJson = JSON.parse(fs.readFileSync("package.json", "utf8"));
-    const dependencies = Object.keys(packageJson.dependencies || {}).map(
-        (dep) => `- **${dep}**: ${packageJson.dependencies[dep]}`
-    );
-    return dependencies.length ? dependencies.join("\n") : "No dependencies listed.";
+  const packageJson = JSON.parse(fs.readFileSync("package.json", "utf8"));
+  const dependencies = Object.keys(packageJson.dependencies || {}).map(
+    dep => `- **${dep}**: ${packageJson.dependencies[dep]}`
+  );
+  return dependencies.length ? dependencies.join("\n") : "No dependencies listed.";
 }
 
 // Function to get the latest commit messages
 function getRecentCommits(): string {
-    return execSync("git log -3 --pretty='- %s (%an)'").toString().trim();
+  return execSync("git log -3 --pretty='- %s (%an)'").toString().trim();
 }
 
 // Function to get the last commit date
 function getLastUpdated(): string {
-    return execSync("git log -1 --format=%cd --date=iso").toString().trim();
+  return execSync("git log -1 --format=%cd --date=iso").toString().trim();
 }
 
 // Function to fetch contributors from GitHub
 function getContributors(): Promise<string> {
-    return new Promise((resolve, reject) => {
-        https.get(GITHUB_API_URL, { headers: { "User-Agent": "request" } }, (res) => {
-            let data = "";
-            res.on("data", (chunk) => { data += chunk; });
-            res.on("end", () => {
-                try {
-                    const contributors = JSON.parse(data)
-                        .map((contributor: any) => `- [@${contributor.login}](${contributor.html_url}) (⭐ ${contributor.contributions} commits)`)
-                        .join("\n");
-                    resolve(contributors || "No contributors yet.");
-                } catch (error) {
-                    reject("Could not fetch contributors.");
-                }
-            });
-        }).on("error", (err) => { reject("Error fetching contributors: " + err.message) });
-    });
+  return new Promise((resolve, reject) => {
+    https
+      .get(GITHUB_API_URL, { headers: { "User-Agent": "request" } }, res => {
+        let data = "";
+        res.on("data", chunk => {
+          data += chunk;
+        });
+        res.on("end", () => {
+          try {
+            const contributors = JSON.parse(data)
+              .map(
+                (contributor: any) =>
+                  `- [@${contributor.login}](${contributor.html_url}) (⭐ ${contributor.contributions} commits)`
+              )
+              .join("\n");
+            resolve(contributors || "No contributors yet.");
+          } catch (error) {
+            reject("Could not fetch contributors.");
+          }
+        });
+      })
+      .on("error", err => {
+        reject("Error fetching contributors: " + err.message);
+      });
+  });
 }
 
 // Generate README content dynamically
 async function generateReadme() {
-    const contributors = await getContributors();
+  const contributors = await getContributors();
 
-    // Generate README content
-    const readmeContent = `# 💰 That Cashflow Life
+  // Generate README content
+  const readmeContent = `# 💰 That Cashflow Life
 
 ## 🚀 Overview
 A financial calculator app built with [**React Native**](https://reactnative.dev/) and [**Expo**](https://expo.dev/), designed to help players and auditors do the math, checking and balances, their financial activities.
@@ -123,9 +132,9 @@ ${contributors}
 _Last updated: ${getLastUpdated()}_
 `;
 
-    const readmePath = path.join(process.cwd(), "README.md");
-    // Write the new README
-    fs.writeFileSync(readmePath, readmeContent, "utf8");
-    console.log(`README.md has been updated. ${new Date()}`);
+  const readmePath = path.join(process.cwd(), "README.md");
+  // Write the new README
+  fs.writeFileSync(readmePath, readmeContent, "utf8");
+  console.log(`README.md has been updated. ${new Date()}`);
 }
 generateReadme();

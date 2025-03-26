@@ -22,9 +22,7 @@ export function useUser() {
 }
 
 // create user provider
-export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User>(blankUser);
 
   // Load user when the component mounts
@@ -54,10 +52,6 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
     saveUser();
   }, [user]);
 
-  return (
-    <UserContext.Provider value={{ user, setUser }}>
-      {children}
-    </UserContext.Provider>
-  );
+  return <UserContext.Provider value={{ user, setUser }}>{children}</UserContext.Provider>;
 };
 export default UserProvider;

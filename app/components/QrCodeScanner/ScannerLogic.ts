@@ -39,10 +39,7 @@ export const getIcon = (professionName: string): Icon => {
  * @param currentUser - copy of current user object state
  * @returns a new User object with the scanned fields updated
  */
-export const populateFirstProfession = (
-  scannedProfession: Profession,
-  currentUser: User
-): User => {
+export const populateFirstProfession = (scannedProfession: Profession, currentUser: User): User => {
   const userInitialValues: User = {
     ...currentUser,
     profession: scannedProfession.name,
@@ -58,14 +55,11 @@ export const populateFirstProfession = (
 
 /**
  * only populate profession name, icon and salary for all professions after the first
- * @param scannedProfession 
- * @param currentUser 
- * @returns user object w changed profession, salary and icon 
+ * @param scannedProfession
+ * @param currentUser
+ * @returns user object w changed profession, salary and icon
  */
-export const populateLaterProfession = (
-  scannedProfession: Profession,
-  currentUser: User
-): User => {
+export const populateLaterProfession = (scannedProfession: Profession, currentUser: User): User => {
   const changedProfessionValues: User = {
     ...currentUser,
     profession: scannedProfession.name,
@@ -81,7 +75,7 @@ export const populateLaterProfession = (
 
 /**
  * Creates transaction for a new job
- * @param scannedProfession 
+ * @param scannedProfession
  * @returns transaction object
  */
 export const createProfessionTransaction = (scannedProfession: Profession): Transaction => {
@@ -97,6 +91,6 @@ export const createProfessionTransaction = (scannedProfession: Profession): Tran
     fieldName: "Salary",
   };
   return newJobTransaction;
-}
+};
 
 export default populateFirstProfession;

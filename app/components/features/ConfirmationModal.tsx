@@ -31,12 +31,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   if (!isVisible) return null;
 
   return (
-    <Modal
-      visible={isVisible}
-      transparent
-      animationType="none"
-      onRequestClose={onCancel}
-    >
+    <Modal visible={isVisible} transparent animationType="none" onRequestClose={onCancel}>
       <View style={styles.overlay}>
         <View style={styles.modalContainer}>
           {/* Title */}
@@ -46,11 +41,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
           <View style={styles.messageContainer}>
             {professionIcon && (
               <View style={styles.professionIconContainer}>
-                <ProfessionIcon
-                  icon={professionIcon}
-                  size={35}
-                  color={Theme.CFL_midnight}
-                />
+                <ProfessionIcon icon={professionIcon} size={35} color={Theme.CFL_midnight} />
               </View>
             )}
             {/* Message Text */}

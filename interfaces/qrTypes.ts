@@ -5,7 +5,7 @@ import Transaction from "./Transaction";
 export default interface QRType {
   type: string;
   data: QRData;
-  scanType?: "Profession" | "Transaction";
+  scanType?: "Profession" | "Transaction" | "RealEstateTransaction";
 }
 
 // Define a union type for scanned QR data

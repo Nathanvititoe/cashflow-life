@@ -1,7 +1,7 @@
 // testData/testProperties.ts
-import { RealEstate } from "../../interfaces/Assets";
+import { RealEstateTransaction } from "../../interfaces/Assets";
 
-export const testProperties: RealEstate[] = [
+export const testProperties: RealEstateTransaction[] = [
   // Properties
   {
     name: "Lakeside Rental",

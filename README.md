@@ -1,25 +1,30 @@
 # 💰 That Cashflow Life
 
 ## 🚀 Overview
+
 A financial calculator app built with [**React Native**](https://reactnative.dev/) and [**Expo**](https://expo.dev/), designed to help players and auditors do the math, checking and balances, their financial activities.
 
 ## 🛠 Our Project
-- **Framework:** React Native + TypeScript  
-- **Workflow:** Expo Go (Managed Workflow)  
-- **Platform:** Developed for Android (via Android Studio), tested on iOS through the Expo Go app  
+
+- **Framework:** React Native + TypeScript
+- **Workflow:** Expo Go (Managed Workflow)
+- **Platform:** Developed for Android (via Android Studio), tested on iOS through the Expo Go app
 
 ---
 
 ## 📦 Installation & Development Setup
 
 ### 🔧 Prerequisites
+
 Ensure you have the following installed:
+
 - **Ubuntu/WSL** (Recommended)
 - **Node.js** (Latest LTS recommended)
 - **Expo CLI**
 - **Android Studio** (for Android development)
 
   Setup instructions:
+
   ```sh
   git clone https://github.com/Nathanvititoe/cashflow-life
   npm i expo -g # Install Expo globally
@@ -35,26 +40,33 @@ Ensure you have the following installed:
 ---
 
 ## 📖 Basic User Instructions
+
 ### 1️⃣ Opening the App
-* Launch the app on your phone via Expo Go or run `expo start`.
-* The home screen displays options to scan a QR code or review financials.
+
+- Launch the app on your phone via Expo Go or run `expo start`.
+- The home screen displays options to scan a QR code or review financials.
 
 ### 2️⃣ Scanning a QR Code
-* Make sure you authorize the app to use the camera.
-* Tap the **Scan QR Code** button.
-* The app will use your camera to scan a card.
-* Once scanned, it will populate the financial statement based on the card.
+
+- Make sure you authorize the app to use the camera.
+- Tap the **Scan QR Code** button.
+- The app will use your camera to scan a card.
+- Once scanned, it will populate the financial statement based on the card.
 
 ### 3️⃣ Viewing Financial Statements
-* Switch between **Before** and **After** views.
-* Changes will be highlighted to show differences.
+
+- Switch between **Before** and **After** views.
+- Changes will be highlighted to show differences.
 
 ### 4️⃣ Auditor Verification
-* The Auditor reviews the financial statement.
-* If everything is correct, they press **Complete** to finalize the transaction.
+
+- The Auditor reviews the financial statement.
+- If everything is correct, they press **Complete** to finalize the transaction.
+
 ---
 
 ## 📦 Dependencies
+
 - **@expo/server**: ^0.5.1
 - **@expo/vector-icons**: ^14.0.4
 - **@react-native-async-storage/async-storage**: 1.23.1
@@ -85,17 +97,18 @@ Ensure you have the following installed:
 - **typescript**: ^5.7.3
 
 ## 🔄 Recent Commits
+
 - hid workflows from vs code again (Nathanvititoe)
 - Auto-update README (#66) (Nathan Vititoe)
 - Auto-update README for commit: added read me to ignore for workflow2 (Nathanvititoe)
 
 ## 👥 Contributors
+
 - [@Nathanvititoe](https://github.com/Nathanvititoe) (⭐ 150 commits)
 - [@ClaytonHin](https://github.com/ClaytonHin) (⭐ 12 commits)
 - [@D-flyRobotics](https://github.com/D-flyRobotics) (⭐ 2 commits)
 - [@expo-bot](https://github.com/expo-bot) (⭐ 1 commits)
 - [@rivasjeremy](https://github.com/rivasjeremy) (⭐ 1 commits)
-
 
 ---
 

@@ -2,7 +2,7 @@
 /** @type {import('prettier').Config} */
 module.exports = {
   // Maximum line length before wrapping
-  printWidth: 80,
+  printWidth: 100,
 
   // Use 2 spaces for indentation
   tabWidth: 2,
@@ -26,13 +26,16 @@ module.exports = {
   bracketSpacing: true,
 
   // Put the closing angle bracket of JSX elements on a new line
-  bracketSameLine: false,
+  bracketSameLine: true,
 
   // Include parentheses around a sole arrow function parameter
-  arrowParens: "always",
+  arrowParens: "avoid",
+
+  // prevent unnecessary new lines
+  proseWrap: "never",
 
   // Ensure consistent line endings
-  endOfLine: "auto",
+  endOfLine: "lf",
 
   // Ensure consistent whitespace in HTML
   htmlWhitespaceSensitivity: "css",

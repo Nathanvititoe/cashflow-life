@@ -3,7 +3,7 @@ import React from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 
 import testProperties from "../../../data/testData/testProperties";
-import { RealEstate } from "../../../interfaces/Assets";
+import { RealEstateTransaction } from "../../../interfaces/Assets";
 import Theme from "../../../interfaces/theme";
 import { useUser } from "../context/UserProvider";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -16,7 +16,7 @@ const Properties = () => {
   const { user } = useUser();
 
   // determines the color based on the transaction type
-  const getTypeColor = (type: RealEstate["type"]) => {
+  const getTypeColor = (type: RealEstateTransaction["type"]) => {
     switch (type) {
       case "house":
         return Theme.CFL_pink;
@@ -28,19 +28,12 @@ const Properties = () => {
   };
 
   // Tsx for every property
-  const renderProperty = (property: RealEstate) => (
+  const renderProperty = (property: RealEstateTransaction) => (
     <View key={property.name} style={styles.card}>
       <View style={styles.propertyCard}>
         <View style={styles.propertyHeader}>
-          <Text style={styles.timestamp}>
-            {formatTimestamp(property.purchaseTime)}
-          </Text>
-          <View
-            style={[
-              styles.typeTag,
-              { backgroundColor: getTypeColor(property.type) },
-            ]}
-          >
+          <Text style={styles.timestamp}>{formatTimestamp(property.purchaseTime)}</Text>
+          <View style={[styles.typeTag, { backgroundColor: getTypeColor(property.type) }]}>
             <Text style={styles.typeText}>{property.type.toUpperCase()}</Text>
           </View>
         </View>
@@ -51,20 +44,12 @@ const Properties = () => {
         <View style={styles.changesContainer}>
           <View style={styles.detailRow}>
             <Text style={styles.fieldName}>Purchase Price:</Text>
-            <Text style={styles.value}>
-              {formatUSD(property["Purchase Price"])}
-            </Text>
+            <Text style={styles.value}>{formatUSD(property["Purchase Price"])}</Text>
           </View>
 
           <View style={styles.detailRow}>
             <Text style={styles.fieldName}>Monthly Cash Flow:</Text>
-            <Text
-              style={
-                property["Cash Flow"] > 0
-                  ? styles.positiveAmount
-                  : styles.negativeAmount
-              }
-            >
+            <Text style={property["Cash Flow"] > 0 ? styles.positiveAmount : styles.negativeAmount}>
               {formatUSD(property["Cash Flow"])}
             </Text>
           </View>
@@ -78,9 +63,7 @@ const Properties = () => {
             <Text style={styles.fieldName}>Sale Range:</Text>
             <Text style={styles.value}>{`${formatUSD(
               Number(property["Sale Range"].split("-")[0])
-            )} - ${formatUSD(
-              Number(property["Sale Range"].split("-")[1])
-            )}`}</Text>
+            )} - ${formatUSD(Number(property["Sale Range"].split("-")[1]))}`}</Text>
           </View>
         </View>
       </View>

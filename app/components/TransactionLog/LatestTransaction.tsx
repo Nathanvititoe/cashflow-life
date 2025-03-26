@@ -16,9 +16,9 @@ const LatestTransaction = () => {
   useEffect(() => {
     const transactions = getTransactions();
     if (transactions.length > 0) {
-      setLatestTransaction(findLatestTransaction(transactions))
+      setLatestTransaction(findLatestTransaction(transactions));
     }
-  }, [getTransactions])
+  }, [getTransactions]);
 
   // if no transactions, display this message
   if (!latestTransaction) {
@@ -31,48 +31,38 @@ const LatestTransaction = () => {
 
   // if theres a transaction, display it
   return (
-    latestTransaction &&
-    <View style={styles.card} key={latestTransaction.timestamp}>
-      <View style={styles.transactionCard}>
-        <View style={styles.transactionHeader}>
-          <Text style={styles.timestamp}>
-            {formatTimestamp(latestTransaction.timestamp)}
-          </Text>
-          <View
-            style={[
-              styles.typeTag,
-              { backgroundColor: getTypeColor(latestTransaction.type) },
-            ]}
-          >
-            <Text style={styles.typeText}>
-              {latestTransaction.type.toUpperCase()}
-            </Text>
+    latestTransaction && (
+      <View style={styles.card} key={latestTransaction.timestamp}>
+        <View style={styles.transactionCard}>
+          <View style={styles.transactionHeader}>
+            <Text style={styles.timestamp}>{formatTimestamp(latestTransaction.timestamp)}</Text>
+            <View
+              style={[styles.typeTag, { backgroundColor: getTypeColor(latestTransaction.type) }]}>
+              <Text style={styles.typeText}>{latestTransaction.type.toUpperCase()}</Text>
+            </View>
           </View>
-        </View>
 
-        <View style={styles.nameContainer}>
-          <View style={styles.newTag}>
-            <Text style={styles.newText}>New</Text>
+          <View style={styles.nameContainer}>
+            <View style={styles.newTag}>
+              <Text style={styles.newText}>New</Text>
+            </View>
+            <Text style={styles.name}>{latestTransaction.name}</Text>
           </View>
-          <Text style={styles.name}>{latestTransaction.name}</Text>
-        </View>
 
-        <View style={styles.changesContainer}>
-          <Text style={styles.description}>{latestTransaction.description}</Text>
-          <View style={styles.fieldChange}>
-            <Text
-              style={
-                latestTransaction.amount > 0
-                  ? styles.positiveAmount
-                  : styles.negativeAmount
-              }
-            >
-              {formatUSD(latestTransaction.amount)}
-            </Text>
+          <View style={styles.changesContainer}>
+            <Text style={styles.description}>{latestTransaction.description}</Text>
+            <View style={styles.fieldChange}>
+              <Text
+                style={
+                  latestTransaction.amount > 0 ? styles.positiveAmount : styles.negativeAmount
+                }>
+                {formatUSD(latestTransaction.amount)}
+              </Text>
+            </View>
           </View>
         </View>
       </View>
-    </View>
+    )
   );
 };
 

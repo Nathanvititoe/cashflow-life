@@ -16,18 +16,12 @@ interface ProfessionIconProps {
   color: string;
 }
 
-const ProfessionIcon: React.FC<ProfessionIconProps> = ({
-  icon,
-  size,
-  color,
-}) => {
+const ProfessionIcon: React.FC<ProfessionIconProps> = ({ icon, size, color }) => {
   switch (icon.library) {
     case "FontAwesome6":
       return <FontAwesome6 name={icon.name} size={size} color={color} />;
     case "MaterialIcons":
-      return (
-        <MaterialIcons name={icon.name as any} size={size} color={color} />
-      );
+      return <MaterialIcons name={icon.name as any} size={size} color={color} />;
     case "Octicons":
       return <Octicons name={icon.name as any} size={size} color={color} />;
     case "Entypo":
