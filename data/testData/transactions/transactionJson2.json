@@ -1,0 +1,23 @@
+{
+  "name": "House Purchase",
+  "timestamp": "2025-02-08T00:30",
+  "type": "Asset",
+  "description": "User bought their first house",
+  "amount": -400,
+  "data": {
+    "Assets": {
+      "Investments": {
+        "Real Estate": {
+          "name": "123 Sesame Street",
+          "type": "house",
+          "description": "1 bedroom, 1 bath, granite countertops",
+          "Purchase Price": 200000,
+          "Sale Range": "220000-250000",
+          "Mortgage": 180000,
+          "Down Payment": 20000,
+          "purchaseTime": "2025-02-08T00:30"
+        }
+      }
+    }
+  }
+}

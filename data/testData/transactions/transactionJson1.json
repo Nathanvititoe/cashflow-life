@@ -1,0 +1,12 @@
+{
+  "name": "Salary Change",
+  "timestamp": "2025-02-01 02:30",
+  "type": "salary",
+  "description": "user got a promotion to manager!",
+  "amount": 15000,
+  "data": {
+    "income": {
+      "Salary": 15000
+    }
+  }
+}

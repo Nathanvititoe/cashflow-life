@@ -1,5 +1,6 @@
 // Format number as USD
-export const formatUSD = (amount: number) => {
+export const formatUSD = (amount?: number): string => {
+  if (!amount) return "$0.00";
   if (typeof amount === "number") {
     return new Intl.NumberFormat("en-US", {
       style: "currency",

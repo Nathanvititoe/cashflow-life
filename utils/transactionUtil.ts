@@ -1,8 +1,8 @@
+import { QRTransaction } from "../interfaces/QrScan";
 import Theme from "../interfaces/theme";
-import Transaction from "../interfaces/Transaction";
 
 // determines the color based on the transaction type
-export const getTypeColor = (type: Transaction["type"]) => {
+export const getTypeColor = (type: QRTransaction["type"]) => {
   switch (type) {
     case "salary":
       return Theme.CFL_green; // income green
@@ -22,9 +22,10 @@ export const getTypeColor = (type: Transaction["type"]) => {
 };
 
 // function to get the transaction w/ the most recent timestamp
-export const findLatestTransaction = (transactions: Transaction[]) => {
+export const findLatestTransaction = (transactions: QRTransaction[]) => {
   return transactions.reduce((mostRecent, current) => {
     return current.timestamp > mostRecent.timestamp ? current : mostRecent;
   }, transactions[0]);
 };
+
 export default getTypeColor;

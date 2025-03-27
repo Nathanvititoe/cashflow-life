@@ -2,8 +2,8 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
+import { QRTransaction } from "../../../interfaces/QrScan";
 import Theme from "../../../interfaces/theme";
-import Transaction from "../../../interfaces/Transaction";
 import formatUSD from "../../../utils/currencyUtil";
 import formatTimestamp from "../../../utils/timeUtil";
 import getTypeColor, { findLatestTransaction } from "../../../utils/transactionUtil";
@@ -11,7 +11,7 @@ import { useTransactions } from "../context/TransactionProvider";
 
 const LatestTransaction = () => {
   const { getTransactions } = useTransactions();
-  const [latestTransaction, setLatestTransaction] = useState<Transaction | null>(null);
+  const [latestTransaction, setLatestTransaction] = useState<QRTransaction | null>(null);
 
   useEffect(() => {
     const transactions = getTransactions();

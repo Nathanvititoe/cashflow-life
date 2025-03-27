@@ -1,0 +1,14 @@
+{
+  "name": "Purchased Bitcoin",
+  "timestamp": "2025-02-08 15:30:00",
+  "type": "aSset",
+  "description": "User must pay the bank for their car loan",
+  "amount": -2000,
+  "data": {
+    "Assets": {
+      "Investments": {
+        "Bitcoin": 100000
+      }
+    }
+  }
+}

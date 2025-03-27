@@ -1,0 +1,14 @@
+{
+  "name": "Dividend Payout",
+  "timestamp": "2025-02-08",
+  "type": "passive income",
+  "description": "Exon Stock paid out $5.00 quarterly dividends",
+  "amount": 5,
+  "data": {
+    "income": {
+      "Passive Income": {
+        "Dividends": 5
+      }
+    }
+  }
+}

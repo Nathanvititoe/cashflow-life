@@ -1,17 +1,17 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { createContext, useContext, useEffect, useState } from "react";
-import Transaction from "../../../interfaces/Transaction";
+import { QRTransaction } from "../../../interfaces/QrScan";
 
 // define TransactionContext type
-interface TransactionsContextType {
-  transactions: Transaction[];
-  addTransactions: (newTransactions: Transaction[]) => void;
+interface QRTransactionsContextType {
+  transactions: QRTransaction[];
+  addTransactions: (newTransactions: QRTransaction[]) => void;
   clearTransactions: () => void;
-  getTransactions: () => Transaction[];
+  getTransactions: () => QRTransaction[];
 }
 
 // create context
-const TransactionsContext = createContext<TransactionsContextType>({
+const TransactionsContext = createContext<QRTransactionsContextType>({
   transactions: [],
   addTransactions: () => {},
   clearTransactions: () => {},
@@ -24,7 +24,7 @@ export function useTransactions() {
 }
 
 export const TransactionsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [transactions, setTransactions] = useState<QRTransaction[]>([]);
 
   // Load transactions from storage
   useEffect(() => {
@@ -54,7 +54,7 @@ export const TransactionsProvider: React.FC<{ children: React.ReactNode }> = ({ 
   }, [transactions]);
 
   // Function to add new transactions
-  const addTransactions = (newTransactions: Transaction[]) => {
+  const addTransactions = (newTransactions: QRTransaction[]) => {
     setTransactions(prevTransactions => [...prevTransactions, ...newTransactions]);
   };
 
@@ -64,7 +64,7 @@ export const TransactionsProvider: React.FC<{ children: React.ReactNode }> = ({ 
   };
 
   // Function to get transactions array
-  const getTransactions = (): Transaction[] => {
+  const getTransactions = (): QRTransaction[] => {
     return transactions;
   };
 

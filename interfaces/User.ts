@@ -7,19 +7,20 @@ import MonthlyExpenses from "./MonthlyExpenses";
 export interface User {
   name: string;
   profession: string;
-  totalIncome?: number; // possibly undefined when scanned in, calculated after
+  totalIncome: number;
   income: Income;
-  totalExpenses?: number; // possibly undefined when scanned in, calculated after
+  totalExpenses: number;
   expenses: MonthlyExpenses;
   Assets: Assets;
-  totalAssets?: number; // possibly undefined when scanned in, calculated after
+  totalAssets: number;
   Liabilities: Liabilities;
-  totalLiabilites?: number; // possibly undefined when scanned in, calculated after
-  netWorth?: number; // possibly undefined when scanned in, calculated after
+  totalLiabilites: number;
+  netWorth: number;
   Children: number;
   ChildCost: number;
   professionIcon: Icon; // this should be the name of the expo/vector icon for the profession and which library its from
 }
+
 export interface Icon {
   name: string;
   library: "AntDesign" | "FontAwesome6" | "MaterialIcons" | "Octicons" | "Entypo" | "FontAwesome5";

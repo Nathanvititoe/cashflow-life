@@ -2,8 +2,8 @@
 import React from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 
+import { QRTransaction } from "../../../interfaces/QrScan";
 import Theme from "../../../interfaces/theme";
-import Transaction from "../../../interfaces/Transaction";
 import { formatUSD } from "../../../utils/currencyUtil";
 import { getTypeColor } from "../../../utils/transactionUtil";
 import { useTransactions } from "../context/TransactionProvider";
@@ -12,7 +12,7 @@ const TransactionLog = () => {
   const { transactions } = useTransactions();
 
   // Tsx for every transaction
-  const renderTransaction = (transaction: Transaction) => (
+  const renderTransaction = (transaction: QRTransaction) => (
     <View style={styles.card} key={transaction.timestamp}>
       <View style={styles.transactionCard}>
         <View style={styles.transactionHeader}>

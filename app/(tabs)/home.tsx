@@ -2,18 +2,17 @@
 import React from "react";
 import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from "react-native";
 
-import { QRData } from "../../interfaces/qrTypes";
+import { QRTransaction } from "../../interfaces/QrScan";
 import Theme from "../../interfaces/theme";
+import User from "../../interfaces/User";
 import { useTransactions } from "../components/context/TransactionProvider";
 import { useUser } from "../components/context/UserProvider";
 import ScannerButton from "../components/QrCodeScanner/ScannerButton";
-import {
-  createProfessionTransaction,
-  populateFirstProfession,
-  populateLaterProfession,
-} from "../components/QrCodeScanner/ScannerLogic";
 import LatestTransaction from "../components/TransactionLog/LatestTransaction";
-import FinancialOverview, { calculateNetWorth } from "../components/UserFinances/FinancialOverview";
+import FinancialOverview, {
+  calculateNetWorth,
+  calculateTotals,
+} from "../components/UserFinances/FinancialOverview";
 
 export const Home = () => {
   // state/ref management section
@@ -21,20 +20,46 @@ export const Home = () => {
   const { addTransactions } = useTransactions();
 
   // this will get the data from a qr scan
-  const handleScan = (data: QRData) => {
-    if (data.scanType === "Profession") {
-      // if this is their first job of the game
-      if (user.profession === "Profession" || user.profession === "") {
-        setUser(populateFirstProfession(data, user));
+  const handleScan = (newTransaction: QRTransaction) => {
+    if (!newTransaction || !newTransaction.type || !newTransaction.data) return;
+
+    // Merge scanned transaction into the existing user, only changing the passed fields
+    setUser(prevUser => {
+      return {
+        ...prevUser,
+        ...newTransaction.data,
+        income: { ...prevUser.income, ...newTransaction.data?.income },
+        expenses: { ...prevUser.expenses, ...newTransaction.data?.expenses },
+        Assets: { ...prevUser.Assets, ...newTransaction.data?.Assets },
+        Liabilities: { ...prevUser.Liabilities, ...newTransaction.data?.Liabilities },
+        profession: newTransaction.data?.profession ?? prevUser.profession,
+        professionIcon: {
+          name: newTransaction.data?.professionIcon?.name ?? prevUser.professionIcon.name ?? "",
+          library:
+            newTransaction.data?.professionIcon?.library ??
+            prevUser.professionIcon.library ??
+            "FontAwesome5",
+        },
+      } as User;
+    });
+
+    // add transacton to transactions log
+    addTransactions([newTransaction]);
+    const type = newTransaction.type;
+    switch (type) {
+      // recalculate net worth after updates to assets/liabilities
+      case "asset":
+      case "liability":
         calculateNetWorth(user, setUser);
-      } else {
-        setUser(populateLaterProfession(data, user));
-      }
-      const newJobTransaction = createProfessionTransaction(data);
-      // Add transaction to global state
-      addTransactions([newJobTransaction]);
-    } else if (data.scanType === "Transaction") {
-      // add logic for determining transaction type, etc..
+        break;
+      case "passive income":
+      case "salary":
+      case "expense":
+      case "career":
+        calculateTotals(user, setUser);
+        break;
+      default:
+        return;
     }
   };
 

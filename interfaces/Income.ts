@@ -5,8 +5,8 @@ export default interface Income {
 
 export interface PassiveIncome {
   // passive income types
-  Interest: number;
-  Dividends: number;
-  "Real Estate Income": number;
-  "Business Income": number;
+  Interest?: number;
+  Dividends?: number;
+  "Real Estate Income"?: number;
+  "Business Income"?: number;
 }

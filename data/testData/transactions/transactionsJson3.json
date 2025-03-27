@@ -1,0 +1,15 @@
+{
+  "name": "Car Purchase",
+  "timestamp": "2025-02-08 18:30",
+  "type": "asset",
+  "description": "User bought a brand new Honda Civic",
+  "amount": -25000,
+  "data": {
+    "expenses": {
+      "Car Payment": 400
+    },
+    "Liabilities": {
+      "Car Loans": 25000
+    }
+  }
+}

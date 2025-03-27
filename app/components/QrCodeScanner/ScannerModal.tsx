@@ -3,39 +3,31 @@ import { BarcodeScanningResult, CameraView } from "expo-camera";
 import React, { useState } from "react";
 import { Alert, Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-import AirlinePilotData from "../../../data/Professions/AirlinePilot/Airline_Pilot.json";
+// test data
+// import AirlinePilotData from "../../../data/Professions/AirlinePilot/Airline_Pilot.json";
+// import transaction1 from "../../../data/testData/transactions/transactionJson1.json"
 // import DoctorData from "../../../data/Professions/Doctor/Doctor.json";
 // import TruckDriverData from "../../../data/Professions/TruckDriver/Truck_Driver.json";
-import QRType from "../../../interfaces/qrTypes";
-import Theme from "../../../interfaces/theme";
-import { Icon } from "../../../interfaces/User";
-import ConfirmationModal from "../features/ConfirmationModal";
-import { getIcon } from "./ScannerLogic";
+import transaction2 from "../../../data/testData/transactions/transactionJson2.json";
 
-// Scanner modal properties definition
+import QRType from "../../../interfaces/QrScan";
+import Theme from "../../../interfaces/theme";
+import ScannerPopup from "./ScannerPopup";
+
 interface ScannerModalProps {
   visible: boolean;
   onClose: () => void;
   onScan: (scan: QRType) => void;
 }
-// ScannerModal function, passing it the properties object
+
 const ScannerModal: React.FC<ScannerModalProps> = ({ visible, onClose, onScan }) => {
-  // Logic/Functions Section
   const [isScanning, setIsScanning] = useState(true); // state to know when it is actively scanning
-  const [popupVisible, setPopupVisible] = useState(false); // state controls post scan popup
-  const [scanData, setScanData] = useState<QRType | null>(null);
-  const [popupInfo, setPopupInfo] = useState<{
-    title: string;
-    message: string;
-    confirmText: string;
-    cancelText: string;
-    professionIcon?: Icon;
-  }>({ title: "", message: "", confirmText: "", cancelText: "" });
+  const [scanData, setScanData] = useState<QRType | null>(null); // data for popup
 
   // // TODO: remove after finalized functionality
   const simulatedResult: BarcodeScanningResult = {
     type: "qr",
-    data: JSON.stringify(AirlinePilotData),
+    data: JSON.stringify(transaction2),
     cornerPoints: [
       { x: 100, y: 100 },
       { x: 200, y: 100 },
@@ -58,86 +50,16 @@ const ScannerModal: React.FC<ScannerModalProps> = ({ visible, onClose, onScan })
         type: result.type,
         data: JSON.parse(result.data),
       };
-      // get popup info based on scan type
-      const popup = getPopupMessage(scan);
-      if (popup) setPopupInfo(popup);
 
-      // open popup and set state data for scan
-      setPopupVisible(true);
       setScanData(scan);
     } catch (error) {
       console.error("QR does not contain valid JSON data", error);
-      Alert.alert(
-        "QR Code Error", // title
-        "QR Code does not contain the expected format.", // message
-        [
-          {
-            text: "OK",
-            onPress: () => setIsScanning(true),
-          },
-        ]
-      );
+      Alert.alert("QR Code Error", "QR Code does not contain the expected format.", [
+        { text: "OK", onPress: () => setIsScanning(true) },
+      ]);
     }
   };
 
-  // returns an obj to display the popup message
-  const getPopupMessage = (
-    scan: QRType
-  ):
-    | {
-        title: string;
-        professionIcon?: Icon;
-        message: string;
-        confirmText: string;
-        cancelText: string;
-      }
-    | undefined => {
-    if (scan && scan.data) {
-      switch (scan.data.scanType) {
-        case "Transaction":
-          return {
-            ...popupInfo,
-            title: `Transaction`,
-            message: `A change has been made to ${scan.data.type}: \n  ${scan.data.amount}`,
-            confirmText: `Confirm`,
-            cancelText: `Cancel`,
-          };
-        case "Profession":
-          return {
-            ...popupInfo,
-            title: `Congrats, You're Hired!`,
-            professionIcon: getIcon(scan.data.name),
-            message: `${scan.data.name}`,
-            confirmText: `Thanks!`,
-            cancelText: `Cancel`,
-          };
-        default:
-          return {
-            ...popupInfo,
-            title: "",
-            message: `Unfortunately... We didn't recognize this scan`,
-            confirmText: `Ok`,
-            cancelText: `Cancel`,
-          };
-      }
-    }
-  };
-
-  const handleScanConfirm = () => {
-    setPopupVisible(false);
-    if (scanData) {
-      onScan(scanData!);
-    } else {
-      Alert.alert("Data failed to load from scan");
-    }
-  };
-
-  // // TODO: remove after finalized functionality
-  const testScan = () => {
-    handleScan(simulatedResult);
-  };
-
-  // Tsx Section
   return (
     // Modal to hold the CameraView
     <Modal
@@ -163,24 +85,23 @@ const ScannerModal: React.FC<ScannerModalProps> = ({ visible, onClose, onScan })
           {/* TODO: FIX THIS AFTER TESTING */}
           {/* Close button */}
           {/* <TouchableOpacity style={styles.closeButton} onPress={onClose}> */}
-          <TouchableOpacity style={styles.closeButton} onPress={testScan}>
+          <TouchableOpacity style={styles.closeButton} onPress={() => handleScan(simulatedResult)}>
             <Text style={styles.closeText}>Close</Text>
           </TouchableOpacity>
 
           {/* Post Scan Confirmation Popup */}
-          {popupVisible && (
-            <ConfirmationModal
-              isVisible={popupVisible}
-              title={popupInfo.title ? popupInfo.title : undefined}
-              professionIcon={popupInfo.professionIcon ? popupInfo.professionIcon : undefined}
-              message={popupInfo.message}
-              onConfirm={handleScanConfirm}
-              onCancel={() => {
-                setPopupVisible(false);
-                setIsScanning(true);
-              }}
-            />
-          )}
+          <ScannerPopup
+            scanData={scanData}
+            onConfirm={(confirmedScan) => {
+              onScan(confirmedScan);
+              setScanData(null);
+              setIsScanning(true);
+            }}
+            onCancel={() => {
+              setScanData(null);
+              setIsScanning(true);
+            }}
+          />
         </CameraView>
       </View>
     </Modal>

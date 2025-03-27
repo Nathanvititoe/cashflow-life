@@ -19,7 +19,7 @@ export const calculateNetWorth = (user: User, setUser: Dispatch<SetStateAction<U
 
 // calculate total income (Salary + passive income) and total expenses (all expenses summed)
 export const calculateTotals = (user: User, setUser: Dispatch<SetStateAction<User>>) => {
-  const totalIncome = addValuesTogether(user.income["Passive Income"]) + user.income.Salary;
+  const totalIncome = addValuesTogether(user.income["Passive Income"]) + (user.income.Salary ?? 0);
   const totalExpenses = addValuesTogether(user.expenses);
   setUser(prevUser => ({ ...prevUser, totalIncome, totalExpenses }));
 };

@@ -3,17 +3,16 @@ import { useCameraPermissions } from "expo-camera";
 import React, { useState } from "react";
 import { Alert, StyleSheet, Text, TouchableOpacity } from "react-native";
 
-import QRType, { QRData } from "../../../interfaces/qrTypes";
+import { QRTransaction } from "../../../interfaces/QrScan";
+import QRType from "../../../interfaces/QrScan";
 import Theme from "../../../interfaces/theme";
 import ScannerModal from "./ScannerModal";
 
-// Properties passed to the Scanner Button component (similiar to a class definition)
 interface ScannerButtonProps {
-  onScan: (data: QRData) => void; // callback to get data from Scanner Modal
+  onScan: (data: QRTransaction) => void; // callback to get data from Scanner Modal
 }
 
 const ScannerButton: React.FC<ScannerButtonProps> = ({ onScan }) => {
-  // Logic/Functions Section
   const [isCameraVisible, setCameraVisible] = useState(false); // boolean for camera modal visibility
   const [permission, requestPermission] = useCameraPermissions(); // set camera permission hook
 

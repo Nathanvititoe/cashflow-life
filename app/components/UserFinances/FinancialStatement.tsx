@@ -9,7 +9,6 @@ import { useUser } from "../context/UserProvider";
 import { calculateTotals } from "./FinancialOverview";
 
 const FinancialStatement = () => {
-  // Logic/Functions Section
   const { user, setUser } = useUser();
 
   // recalculate everytime income/expenses values change
@@ -32,25 +31,24 @@ const FinancialStatement = () => {
             {/* Salary */}
             <View style={styles.row}>
               <Text style={styles.label}>Salary:</Text>
-              <Text style={styles.value}>{formatUSD(user.income.Salary)}</Text>
+              <Text style={styles.value}>{formatUSD(user.income?.Salary)}</Text>
             </View>
 
             {/* Separator Line */}
             <View style={styles.separator} />
 
             {/* Passive Income */}
-            {user.income &&
-              Object.entries(user.income["Passive Income"]).map(([source, amount]) => (
-                <View key={source} style={styles.row}>
-                  <Text style={styles.label}>{source}:</Text>
-                  <Text style={styles.value}>{formatUSD(amount)}</Text>
-                </View>
-              ))}
+            {Object.entries(user.income["Passive Income"]).map(([source, amount]) => (
+              <View key={source} style={styles.row}>
+                <Text style={styles.label}>{source}:</Text>
+                <Text style={styles.value}>{formatUSD(amount)}</Text>
+              </View>
+            ))}
 
             <View style={[styles.row, styles.totalRow]}>
               <Text style={styles.totalLabel}>Passive Income:</Text>
               <Text style={styles.positive}>
-                {formatUSD(addValuesTogether(user.income["Passive Income"]))}
+                {formatUSD(addValuesTogether(user.income?.["Passive Income"]))}
               </Text>
             </View>
 
@@ -99,15 +97,15 @@ const FinancialStatement = () => {
         <View style={styles.card}>
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Liabilities</Text>
-            {Object.entries(user.Liabilities).map(([liability, amount]) => (
+            {Object.entries(user.Liabilities ?? {}).map(([liability, amount]) => (
               <View key={liability} style={styles.row}>
                 <Text style={styles.label}>{liability}:</Text>
-                <Text style={styles.value}>{formatUSD(amount)}</Text>
+                <Text style={styles.value}>{formatUSD(amount ?? 0)}</Text>
               </View>
             ))}
             <View style={[styles.row, styles.totalRow]}>
               <Text style={styles.totalLabel}>Total Liabilities:</Text>
-              <Text style={styles.negative}>{formatUSD(user.totalLiabilites ?? 0)}</Text>
+              <Text style={styles.negative}>{formatUSD(user.totalLiabilites)}</Text>
             </View>
           </View>
         </View>
